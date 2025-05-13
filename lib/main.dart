@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:tampilan_profil_tiktok/login.dart';
-
-
-void main() {
+import 'package:get/get.dart';
+import 'package:tampilan_profil_tiktok/splash_screen.dart';
+import 'package:get_storage/get_storage.dart';
+void main ()async {
+  await GetStorage.init();
   runApp(const MyApp());
 }
 
@@ -12,13 +13,14 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: Login()
+      home: SplashScreen()
     );
   }
 }

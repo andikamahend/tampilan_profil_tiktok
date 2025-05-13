@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:tampilan_profil_tiktok/gantitema.dart';
+import 'package:tampilan_profil_tiktok/login.dart';
 import 'package:tampilan_profil_tiktok/text_field_bundar.dart';
+import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+
+
 
 class ProfilTiktok extends StatefulWidget {
   const ProfilTiktok({super.key});
@@ -23,57 +28,56 @@ class _ProfilTiktokState extends State<ProfilTiktok> {
     return Scaffold(
       backgroundColor: backgroundColor,
       body: SafeArea(
-        child: Column(
-          children: [
-            //AppBar
-            foto_profil(),
-            followers(),
-            // Icon bar (optional, dummy)
-            icons(),
-            // kolom foto
-            gambar()
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              //AppBar
+              foto_profil(),
+              followers(),
+              // Icon bar (optional, dummy)
+              icons(),
+              // kolom foto
+              gambar()
+            ],
+          ),
         ),
       ),
     );
   }
 
-  Expanded gambar() {
-    return Expanded(
-            child: GridView.builder(
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              itemCount: 6,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                mainAxisSpacing: 5,
-                crossAxisSpacing: 5,
-                childAspectRatio: 1.0,
-              ),
-              itemBuilder: (context, index) {
-                // List gambar langsung di dalam builder
-                final images = [
-                  'images/1.jpg',
-                  'images/2.jpg',
-                  'images/3.jpg',
-                  'images/4.jpg',
-                  'images/5.jpg',
-                  'images/6.jpg',
-                ];
+Widget gambar() {
+  final images = [
+    'images/1.jpg',
+    'images/2.jpg',
+    'images/3.jpg',
+    'images/4.jpg',
+    'images/5.jpg',
+    'images/6.jpg',
+  ];
 
-                return Container(
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage(images[index]),
-                      fit: BoxFit.cover,
-                    ),
-                    borderRadius: BorderRadius.circular(8),
-                    color: Colors.grey[800],
-                  ),
-                );
-              },
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 10),
+    child: Wrap(
+      spacing: 5,
+      runSpacing: 5,
+      children: images.map((imagePath) {
+        return Container(
+          width: MediaQuery.of(context).size.width / 3 - 14, // 3 kolom
+          height: MediaQuery.of(context).size.width / 3 - 14,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage(imagePath),
+              fit: BoxFit.cover,
             ),
-          );
-  }
+            borderRadius: BorderRadius.circular(8),
+            color: Colors.grey[800],
+          ),
+        );
+      }).toList(),
+    ),
+  );
+}
+
 
   Column icons() {
     return Column(
@@ -188,13 +192,16 @@ class _ProfilTiktokState extends State<ProfilTiktok> {
                   SizedBox(width: 10), // Jarak antar tombol
                   ElevatedButton(
                     onPressed: () {
-                    // Aksi share profile
+                    final box = GetStorage();
+                    box.remove('username');
+
+                    Get.off(()=> Login());
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.grey[800],
                       foregroundColor: Colors.white,
                     ),
-                    child: Text("Share Profile"),
+                    child: Text("Log out"),
                   ),
                   SizedBox(width: 10), 
                   // Tombol Icon Person Add 
